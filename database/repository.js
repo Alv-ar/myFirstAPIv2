@@ -27,3 +27,17 @@ module.exports.selectAll = async (data) => {
   }
   return response;
 }
+
+module.exports.create = async (obj) => {
+  let response = { status: false };
+  try {
+    const doc = await obj.save();
+    response = {
+      status: true,
+      result: doc,
+    };
+  } catch(err) {
+    console.log('ERROR-repository-create: ', err);
+  }
+  return response;
+}

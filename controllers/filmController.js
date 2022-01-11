@@ -1,5 +1,5 @@
 const c = require("../config/constants");
-const userService = require("../services/filmService");
+const filmService = require("../services/filmService");
 
 module.exports = {
     selectById: async (req, res) => {
@@ -22,6 +22,27 @@ module.exports = {
             }
         } catch (err) {
             console.log("ERROR-userController-selectById: ", err);
+            response.error = err;
+        }
+        res.status(response.status).send(response);
+    },
+
+    create: async (req, res) => {
+        const response = {
+            status: c.status.serverError,
+            msg: "Internal server error",
+        };
+        try {
+            const film = req.body;
+            film.active = true;
+            const resFromService = await filmService.create(film);
+            if (resFromService.status) {
+                response.status = c.status.created;
+                response.msg = "Film created";
+                response.body = resFromService.result;
+            }
+        } catch (err) {
+            console.log("ERROR-filmController-create: ", err);
             response.error = err;
         }
         res.status(response.status).send(response);

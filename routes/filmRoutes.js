@@ -11,4 +11,10 @@ router.get(
     filmController.selectById
 );
 
+router.post(
+    "/create",
+    joiMiddleware.validate(filmSchemas.createFilmSchema, "body"),
+    filmController.create
+);
+
 module.exports = router;
